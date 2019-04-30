@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import net.lzzy.practicesonline.R;
+import net.lzzy.practicesonline.constants.ApiConstants;
 import net.lzzy.practicesonline.fragments.SplashFragment;
 import net.lzzy.practicesonline.utils.AbstractStaticHandler;
 import net.lzzy.practicesonline.utils.AppUtils;
@@ -118,7 +119,7 @@ public class SplashActivity extends BaseActivity implements SplashFragment.OnSpl
 
     private  void detectServerStatus(){
        try {
-           AppUtils.tryConnectServer("http://10.88.91.102:8888");
+           AppUtils.tryConnectServer(ApiConstants.URL_API);
        }catch (IOException e){
           handler.sendMessage(handler.obtainMessage(WHAT_SERVER_OFF,e.getMessage()));
 
@@ -126,7 +127,7 @@ public class SplashActivity extends BaseActivity implements SplashFragment.OnSpl
     }
     public void gotoMain(){
         startActivity(new Intent(this,PracticesActivity.class));
-
+        finish();
     }
 
     @Override

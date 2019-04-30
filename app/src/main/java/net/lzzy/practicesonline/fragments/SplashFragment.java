@@ -20,7 +20,7 @@ public class SplashFragment extends BaseFragment {
     @Override
     protected void populate() {
         View wall = find(R.id.faragment_splash_wall);
-        int pos = Calendar.getInstance().get(Calendar.SECOND ) & 3;
+        int pos = Calendar.getInstance().get(Calendar.SECOND ) % 3;
         wall.setBackgroundResource(imgs[pos]);
         wall.setOnClickListener(v -> listener.cancelCcunt());
 

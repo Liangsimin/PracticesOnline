@@ -114,7 +114,7 @@ public class AppUtils extends Application {
     }
     public static Pair<String,String> loadServerSetting(Context context){
         SharedPreferences spSeting = context.getSharedPreferences(SP_SETTING,MODE_PRIVATE);
-        String ip = spSeting.getString(URL_IP,"10.88.91.102");
+        String ip = spSeting.getString(URL_IP,"10.88.91.103");
         String port = spSeting.getString(URL_PORT,"8888");
         return new Pair<>(ip,port);
 

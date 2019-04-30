@@ -16,6 +16,10 @@ public abstract class AbstractStaticHandler<T> extends Handler {
         this.context = new WeakReference<>(context);
     }
 
+    protected AbstractStaticHandler(WeakReference<T> context) {
+        this.context = context;
+    }
+
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
