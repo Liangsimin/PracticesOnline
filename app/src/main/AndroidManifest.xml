@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activitys.QuestionActivity"></activity>
+        <activity android:name=".fragments.QuestionFragment"></activity>
+        <activity android:name=".fragments.fragment_question" />
+        <activity android:name=".activitys.QuestionActivity" />
         <activity android:name=".activitys.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activitys.PracticesActivity" />
-        <service android:name=".network.DetectWebService"/>
+
+        <service android:name=".network.DetectWebService" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package net.lzzy.practicesonline.models;
 
 import android.text.TextUtils;
 
+
 import net.lzzy.practicesonline.constants.DbConstants;
 import net.lzzy.practicesonline.utils.AppUtils;
 import net.lzzy.sqllib.SqlRepository;
@@ -9,78 +10,73 @@ import net.lzzy.sqllib.SqlRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lzzy_gxy on 2019/4/17.
- * Description:
- */
 public class QuestionFactory {
+    private static final QuestionFactory ourInstance = new QuestionFactory();
     private SqlRepository<Question> repository;
     private SqlRepository<Option> optionRepository;
-    private static final QuestionFactory ourInstance = new QuestionFactory();
-
     public static QuestionFactory getInstance() {
         return ourInstance;
     }
-
     private QuestionFactory() {
-        repository = new SqlRepository<>(AppUtils.getContext(), Question.class, DbConstants.packager);
-        optionRepository = new SqlRepository<>(AppUtils.getContext(), Option.class, DbConstants.packager);
-
-
+        repository=new SqlRepository<>(AppUtils.getContext(), Question.class, DbConstants.packager);
+        optionRepository=new SqlRepository<>(AppUtils.getContext(), Option.class, DbConstants.packager);
     }
-    public void completeQuestion(Question question)throws InstantiationException,IllegalAccessException{
-        List<Option> options=optionRepository.getByKeyword(question.getId().toString(),
-                new String[]{Option.COL_QUESTION_ID},true);
+
+
+
+
+
+    private void completeQuestion(Question question) throws InstantiationException, IllegalAccessException {
+        List<Option> options=optionRepository.getByKeyword(question.getId().toString(),new String[]{Option.QUESTION_ID},true);
         question.setOptions(options);
         question.setDbType(question.getDbType());
     }
-    public Question getById(String questionId){
+
+    public Question getById(String practiceId){
         try {
-            Question question=repository.getById(questionId);
+            Question question=repository.getById(practiceId);
             completeQuestion(question);
             return question;
-        }catch (IllegalAccessException|InstantiationException e){
+        } catch (InstantiationException|IllegalAccessException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Question> getByPractice(String practiceId) {
-        //todo:2
-        try {
-            List<Question> questions = repository.getByKeyword(practiceId,
-                    new String[]{Question.COL_PRACTICE_ID}, true);
-            for (Question question : questions) {
+    public List<Question> getQuestionByPractice(String practiceId){
+        try{
+            List<Question> questions=repository.getByKeyword(practiceId,
+                    new String[]{Question.Col_PRACTICE_ID},true);
+            for (Question question:questions){
                 completeQuestion(question);
             }
             return questions;
-        } catch (IllegalAccessException | InstantiationException e) {
+        }catch (InstantiationException|IllegalAccessException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
-
-
-    public void  insert(Question question){
-        String q=repository.getInsertString(question);
+    public void insert(Question question){
+        //todo:1
+        List<Option> options=question.getOptions();
         List<String> sqlActions=new ArrayList<>();
-        for (Option option:question.getOptions()){
+        for (Option option:options){
             sqlActions.add(optionRepository.getInsertString(option));
         }
-        sqlActions.add(q);
+        sqlActions.add(repository.getInsertString(question));
+        //执行插入语句
         repository.exeSqls(sqlActions);
-
     }
-        List<String> getDeleteString(Question question){
-        List<String> sqlActions = new ArrayList<>();
+    public List<String> getDeleteString(Question question){
+        List<String> sqlActions=new ArrayList<>();
         sqlActions.add(repository.getDeleteString(question));
-        for (Option option :question.getOptions()){
+        for (Option option:question.getOptions()){
             sqlActions.add(optionRepository.getDeleteString(option));
-        }String f = (String) FavoriteFactory.getInstance().getDeleteString(question.getId().toString());
+        }
+        String f=((FavoriteFactory) FavoriteFactory.getInstance()).getDeleteString(question.getId().toString());
         if (!TextUtils.isEmpty(f)){
             sqlActions.add(f);
         }
         return sqlActions;
     }
-
 }

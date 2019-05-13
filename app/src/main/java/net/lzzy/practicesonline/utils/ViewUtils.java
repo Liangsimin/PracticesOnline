@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
 
 import net.lzzy.practicesonline.R;
+import net.lzzy.practicesonline.activitys.QuestionActivity;
 import net.lzzy.practicesonline.activitys.SplashActivity;
 
 /**
@@ -60,6 +61,10 @@ public class ViewUtils {
 
 }).show();
     }
+
+
+
+
     public abstract static class AbstractTouchListener implements View.OnTouchListener{
         @Override
         @SuppressWarnings("ClickableViewAccessibility")
@@ -99,5 +104,14 @@ public class ViewUtils {
          * @param kw 搜索关键词
          */
         public abstract void handleQuery(String kw);
+    }
+    public static int px2dp(int pxValue, Context context) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int dp2px(int dpValue,Context context) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }

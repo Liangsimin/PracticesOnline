@@ -28,7 +28,7 @@ import net.lzzy.practicesonline.fragments.PracticesFragment;
  * Created by lzzy_gxy on 2019/4/16.
  * Description:
  */
-public class PracticesActivity extends BaseActivity  implements PracticesFragment.practiceSelecTedListener{
+public class PracticesActivity extends BaseActivity  implements PracticesFragment.StateActivityInterface{
 
     public static final String EXTRA_PRACTICE_ID = "practiceId";
     public static final String EXTRA_API_ID = "apiId";
@@ -107,7 +107,7 @@ public class PracticesActivity extends BaseActivity  implements PracticesFragmen
     protected Fragment createFragment() {
         return new PracticesFragment();
     }
-    @Override
+
     public void onPracticeSelected(String practiceId, int apiId){
     Intent intent = new Intent(this,QuestionActivity.class);
 
@@ -131,4 +131,14 @@ public class PracticesActivity extends BaseActivity  implements PracticesFragmen
                 .setPositiveButton("退出",((dialog, which) -> AppUtils.exit()))
                 .show();
     }
-}
+
+    @Override
+    public void stateActivityInterface(String practiceId, Integer apiId) {
+        Intent intent=new Intent(this,QuestionActivity.class);
+        intent.putExtra(EXTRA_PRACTICE_ID,practiceId);
+        intent.putExtra(EXTRA_API_ID,apiId);
+        startActivity(intent);
+    }
+
+    }
+

@@ -11,13 +11,8 @@ import java.lang.ref.WeakReference;
  */
 public abstract class AbstractStaticHandler<T> extends Handler {
     private final WeakReference<T> context;
-
-    public AbstractStaticHandler(T context){
+    protected AbstractStaticHandler(T context){
         this.context = new WeakReference<>(context);
-    }
-
-    protected AbstractStaticHandler(WeakReference<T> context) {
-        this.context = context;
     }
 
     @Override
@@ -28,12 +23,11 @@ public abstract class AbstractStaticHandler<T> extends Handler {
     }
 
     /**
-     * 处理消息业务逻辑
-     * @param msg
-     * @param t Activity or Fragment对象
+     * 处理消息的业务逻辑
+     * @param msg Message对象
+     * @param t context
      */
-    public abstract  void  handleMessage(Message msg,T t);
+    public abstract void handleMessage(Message msg,T t);
+}
 
-
-    }
 

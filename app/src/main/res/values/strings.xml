@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">PracticesOnline</string>
+    <string name="net_lzzy_20170313007">net.lzzy.20170313007</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="practices_fragment">Practices fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

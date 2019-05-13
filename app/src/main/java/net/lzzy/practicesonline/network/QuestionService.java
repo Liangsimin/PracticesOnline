@@ -20,39 +20,36 @@ import java.util.UUID;
  * Description:
  */
 public class QuestionService {
-    public  static String getQuestionsOfPracticeFromServer(int apiId) throws IOException {
-
-        String address = ApiConstants.URL_QUESTIONS + apiId;
+    public static String getQuestionOfPracticeFormService(int apiId) throws Exception {
+        String address= ApiConstants.URL_QUESTION+apiId;
         return ApiService.okGet(address);
     }
 
-    public static List<Question> getQuestions(String json, UUID practiceId) throws IllegalAccessException, JSONException, InstantiationException {
-        JsonConverter<Question> converter = new JsonConverter<Question>(Question.class);
-        List<Question> questions = converter.getArray(json);
+    public static List<Question> getQuestions(String json, UUID practiceId) throws Exception {
+        JsonConverter<Question> converter=new JsonConverter<>(Question.class);
+        List<Question> questions=converter.getArray(json);
         for (Question question:questions){
             question.setPracticeId(practiceId);
         }
         return questions;
     }
-    public static List<Option> getOptionsFromJson(String jsonOptions,String jsonAnswers) throws IllegalAccessException, JSONException, InstantiationException {
-        JsonConverter<Option> converter = new JsonConverter<Option>(Option.class);
-        List<Option> options = converter.getArray(jsonOptions);
-        List<Integer> answerIds = new ArrayList<>();
-        JSONArray array = (JSONArray) (new JSONTokener(jsonAnswers)).nextValue();
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            answerIds.add(obj.getInt(ApiConstants.JSON_OPTION_OPTION_ID));
-        }
-        for (Option o : options) {
-            if (answerIds.contains(o.getApild())) {
-                o.setAnswer(true);
-            } else {
-                o.setAnswer(false);
-            }
 
+    public static List<Option> getOptionFormJson(String jsonOption,String jsonAnswers) throws IllegalAccessException, InstantiationException, JSONException {
+        JsonConverter<Option> converter=new JsonConverter<>(Option.class);
+        List<Option> options=converter.getArray(jsonOption);
+        List<Integer> answerIds=new ArrayList<>();
+        JSONArray array = (JSONArray)(new JSONTokener(jsonAnswers)).nextValue();
+        for (int i=0;i<array.length();i++){
+            JSONObject obj=array.getJSONObject(i);
+            answerIds.add(obj.getInt(ApiConstants.JSON_ANSWERS_OPTION_ID));
+        }
+        for (Option option:options){
+            if (answerIds.contains(option.getApiId())){
+                option.setAnswer(true);
+            }else {
+                option.setAnswer(false);
+            }
         }
         return options;
     }
-
-    }
-
+}
