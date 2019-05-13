@@ -179,7 +179,7 @@ public class UserCookies {
        }else if (extra){
            return new Pair<>(false, WrongType.EXTRA_OPTIONS);
        }else {
-           return new Pair<>(false, WrongType.RIGHT_OPTIONS);
+           return new Pair<>(true, WrongType.RIGHT_OPTIONS);
        }
 
    }
