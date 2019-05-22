@@ -30,8 +30,9 @@ import net.lzzy.practicesonline.fragments.PracticesFragment;
  */
 public class PracticesActivity extends BaseActivity  implements PracticesFragment.StateActivityInterface{
 
-    public static final String EXTRA_PRACTICE_ID = "practiceId";
+    public static final String EXTRA_PRACTICE_ID = "extraPracticeId";
     public static final String EXTRA_API_ID = "apiId";
+    public static final String EXTRA_RESULT = "extraResult";
     public static final String EXTRA_LOCAL_COUNT="extraLocalCount";
     private boolean refresh=false;
 
@@ -139,6 +140,7 @@ public class PracticesActivity extends BaseActivity  implements PracticesFragmen
         intent.putExtra(EXTRA_API_ID,apiId);
         startActivity(intent);
     }
+
 
     }
 

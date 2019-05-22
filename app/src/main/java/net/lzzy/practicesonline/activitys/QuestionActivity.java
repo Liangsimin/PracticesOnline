@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.fragments.QuestionFragment;
+import net.lzzy.practicesonline.models.FavoriteFactory;
 import net.lzzy.practicesonline.models.Question;
 import net.lzzy.practicesonline.models.QuestionFactory;
 import net.lzzy.practicesonline.models.UserCookies;
@@ -41,8 +43,12 @@ import static net.lzzy.practicesonline.activitys.PracticesActivity.EXTRA_PRACTIC
 
 public class QuestionActivity extends AppCompatActivity {
 
-    private static final String EXTRA_RESULT = "result";
+
+
     public static final int REQUEST_CODE_RESULT =0;
+    public static final int COLLECT_RESULT_CODE=2;
+    public static final String EXTRA_PRACTICE_ID="practiceId";
+    public static final String EXTRA_RESULT = "extraResult";
     private String practiceId;
     private int apiId;
     private List<Question> questions;
@@ -140,9 +146,37 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         //todo:返回查看数据（全部 or 收藏）
+        if (REQUEST_CODE_RESULT == requestCode && data != null && resultCode == ResultActivity.RESULT_CODE) {
+            int pos = data.getIntExtra(ResultActivity.POS, -1);
+            if (pos >= 0) {
+                pager.setCurrentItem(pos);
+            }
+
+        }
+        if (requestCode == REQUEST_CODE_RESULT && resultCode == COLLECT_RESULT_CODE && data != null) {
+            String pId = data.getStringExtra(ResultActivity.PRACTICE_ID);
+            if (!pId.isEmpty()) {
+                List<Question> questionList = new ArrayList<>();
+                FavoriteFactory factory = FavoriteFactory.getInstance();
+                for (Question question : QuestionFactory.getInstance().getQuestionByPractice(pId)) {
+                    if (factory.isQuestionStarred(question.getId().toString())) {
+                        questionList.add(question);
+                    }
+                }
+                questions.clear();
+                questions.addAll(questionList);
+                initData();
+                adapter.notifyDataSetChanged();
+                if (questions.size() > 0) {
+                    pager.setCurrentItem(0);
+                    refreshDots(0);
+                }
+
+            }
+        }
     }
 
     /**
@@ -242,7 +276,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void retrieveData() {
-        practiceId=getIntent().getStringExtra(EXTRA_PRACTICE_ID);
+        practiceId=getIntent().getStringExtra(PracticesActivity.EXTRA_PRACTICE_ID);
         apiId=getIntent().getIntExtra(PracticesActivity.EXTRA_API_ID,-1);
         questions= QuestionFactory.getInstance().getQuestionByPractice(practiceId);
         isCommitted= UserCookies.getInstance().isPracticeCommitted(practiceId);

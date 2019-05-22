@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Pair;
 
+import net.lzzy.practicesonline.R;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -78,6 +80,7 @@ public class AppUtils extends Application {
             return null;
         }
 
+
     public static void setRunning(String runningActivity){
         AppUtils.runningActivity= runningActivity;
 
@@ -123,6 +126,7 @@ public class AppUtils extends Application {
         return new Pair<>(ip,port);
 
     }
+
     //region 4、线程池的创建
     //cpu数量
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();

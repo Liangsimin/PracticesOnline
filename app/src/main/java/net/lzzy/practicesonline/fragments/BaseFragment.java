@@ -54,7 +54,7 @@ public abstract class BaseFragment extends Fragment {
      * @param <T> 视图类型
      * @return 视图
      */
-    <T extends View> T find(@IdRes int id){
+    protected <T extends View> T find(@IdRes int id){
         return Objects.requireNonNull(getView()).findViewById(id);
     }
 
